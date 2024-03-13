@@ -10,6 +10,14 @@ class Products{
         return $stmt->execute() ;
     }
 
+    public static function Update(string $col,string $data,string $id) : bool {
+        global $conn;
+        $col = $conn->escape_string($col);
+        $stmt = $conn->prepare("UPDATE `products` SET `$col`=? WHERE  `id`=?");
+        $stmt->bind_param("si",$data,$id);
+        return $stmt->execute();
+    }
+
     public static function All(int $page = 0,int $perpage = 10)
     {
         global $conn;
