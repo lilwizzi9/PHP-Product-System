@@ -1,0 +1,70 @@
+
+
+
+body{
+    margin: 0px;
+}
+
+form{
+    width: 50% ;
+    max-width: 500px;
+    min-width: 400px;
+    margin: 50px auto;
+    padding: 50px 20px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 5px black;
+}
+
+form input{
+    display: block;
+    margin: auto;
+}
+
+form label{
+    display: block;
+    max-width: inherit;
+    margin: auto;
+    text-align: center;
+}
+
+form button{
+    display: block;
+    margin: auto;
+}
+
+form *{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+#ErrorMessage{
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.product{
+    margin: 8px;
+    border-radius: 5px;
+    display: flex;
+    box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.253);
+}
+.product > .display img{
+    height: inherit;
+    width: inherit;
+}
+.product > .display{
+    width: 200px;
+    height: 150px;
+    margin: 5px 8px;
+    overflow:hidden;
+    border-radius: 5px;
+}
+
+/* .product *{
+    border: 1px solid black;
+}
+.product{
+    border: 1px solid black;
+} */

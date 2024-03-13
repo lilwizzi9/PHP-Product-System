@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+
+        <form name="Reg" method="get" onsubmit="return Validate()">
+            <label for="">User Name</label>
+            <input type="text" id="" name = "username">
+            <label for="">Email</label>
+            <input type="email" id="" name = "email">
+            <label for="">Password</label>
+            <input type="password" id="" name = "password">
+            <button>submit</button>
+            <div id="ErrorMessage">
+            </div>
+        </form>
+        <div id="dynamic">
+            
+        </div>
+
+
+        Exit
+        <!-- Product Display -->
+        <div id="baseProduct" class="product">
+            <div class="display">
+                <img src="https://cdn.dummyjson.com/product-images/1/thumbnail.jpg" alt="">
+            </div>
+            <div>
+                <h3 id="title">Product Name</h3>
+                <div>Lorem ipsum, dolor sit amet consectetur adipisicing </div>
+                <div class="price">$50</div>
+            </div>
+        </div>
+        <!-- Product -->
+    </body>
+
+    <script src="./js/main.js"></script>
+</html>
