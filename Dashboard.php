@@ -8,7 +8,8 @@ print($_SESSION["userID"]);
 // Products::Add("Bag","Hand Bag",$_SESSION["userID"]);
 //Users::Add("Danny111","Danny111@Gmail.com","12345");
 
-var_dump(Users::Get(8));
+// var_dump(Users::All(["username","email"]));
+var_dump(Users::Get(8,["username","email"]));
 
 
 ?>

@@ -1,3 +1,7 @@
+<a href="login.php">Login</a><br>
+<a href="register.php">Register</a><br>
+
+
 <?php
 include_once __DIR__."/lib/database/connection.php";
 

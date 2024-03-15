@@ -26,22 +26,47 @@ class Users{
         $query = "SELECT * from `users` WHERE `id` = ?";
         if(count($cols)!=0){
             $cols_ = implode(",",$cols);
-            str_replace("*" , $cols_,$query);
+            $query = str_replace("*" , $cols_,$query);
         }
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i",$id);
         
-        if(!$stmt->execute()){
+        if($stmt->execute()){
+            $row = null;
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            return $row == null ? []:$row;
+        }
+        return [];
+        
+    }
+    public static function All(array $cols = [],int $page = 0,int $perpage = 10)
+    {
+        global $conn;
+        $query = "SELECT * from `users` LIMIT ? OFFSET ?";
+        if(count($cols)!=0){
+            $cols_ = implode(",",$cols);
+            $query = str_replace("*" , $cols_,$query);
+        }   
+        $offset = $page*$perpage; 
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ii", $perpage,$offset);
+        if($stmt->execute()){
+            //$stmt->store_result();
+            $res = $stmt->get_result();
+            if($res){
+                $result_array = [];
+                while($row = $res->fetch_assoc()){
+                    array_push($result_array,$row );
+                }
+                return $result_array;
+            }else{
+                return [];
+            }
+        }else{
             return [];
         }
-
-        $stmt->store_result();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        return $row == null ? []:$row;
     }
-
     //delete
     public static function Delete(int $id) : bool {
         global $conn;
