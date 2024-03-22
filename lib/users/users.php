@@ -1,19 +1,31 @@
 <?php
 include_once __DIR__."/../database/connection.php"; 
+include_once __DIR__."/../sqlEntity/sqlEntity.php";
 
-class Users{
 
 
-    //create
+
+
+
+
+
+class Users extends sqlEntity{
+
+    public static $table = "users"; 
+
+
+    /**
+     * create a new user and hash password
+     */
     public static function Add(string $name,string $email,string $password) : bool {
         global $conn;
         $password = password_hash($password,PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO `users` (`username`,`email`,`password`) VALUES (?,?,?)");
+        $stmt = $conn->prepare("INSERT INTO `".Users::$table."` (`?`,`?`,`?`) VALUES (?,?,?)");
         $stmt->bind_param("sss",$name,$email,$password);
         return $stmt->execute();
     }
     //update
-    public static function Update(string $col,string $data,int $id) : bool {
+    public static function Update(int $id, string $col,string $data) : bool {
         global $conn;
         $col = $conn->escape_string($col);
         $stmt = $conn->prepare("UPDATE `users` SET `$col`=? WHERE  `id`=?");

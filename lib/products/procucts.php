@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__."/../database/connection.php"; 
-class Products{
+include_once __DIR__."/../sqlEntity/sqlEntity.php"; 
+class Products extends sqlEntity{
 
 
     public static function Add(string $name,string $desc,int $owner){
@@ -10,13 +11,13 @@ class Products{
         return $stmt->execute() ;
     }
 
-    public static function Update(string $col,string $data,string $id) : bool {
-        global $conn;
-        $col = $conn->escape_string($col);
-        $stmt = $conn->prepare("UPDATE `products` SET `$col`=? WHERE  `id`=?");
-        $stmt->bind_param("si",$data,$id);
-        return $stmt->execute();
-    }
+    // public static function Update(string $id, string $col,string $data) : bool {
+    //     global $conn;
+    //     $col = $conn->escape_string($col);
+    //     $stmt = $conn->prepare("UPDATE `products` SET `$col`=? WHERE  `id`=?");
+    //     $stmt->bind_param("si",$data,$id);
+    //     return $stmt->execute();
+    // }
 
     public static function All(int $page = 0,int $perpage = 10)
     {
