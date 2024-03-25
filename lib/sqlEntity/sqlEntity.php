@@ -6,11 +6,8 @@ class sqlEntity{
 
     protected static $table = null; 
 
-
-    public static function Create(array $data): bool{
+    protected static function Create(array $data): bool{
         global $conn;
-        echo"hello";
-        //`username`,`email`,`pwd`,`?`,`?`,`?`
         $cols = [];
         $colData = [];
         $types = "";
@@ -22,15 +19,17 @@ class sqlEntity{
         $cols = implode(",",$cols);
         $colData = implode(",",$colData);
         $query = "INSERT INTO `".static::$table."` ($cols) VALUES ($colData)";
-        print($query."<br><br>");
         $stmt = $conn->prepare($query);
         $stmt->bind_param($types,...array_values($data));
         return $stmt->execute();
     }
 
     protected static function Update(int $id,string $col,string $data): bool{
-        
-        return false;
+        global $conn;
+        $query = "UPDATE `".static::$table."` SET `$col` = ? where `id` = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s",$data);
+        return $stmt->execute();
     }
     /**
      * the updateMany updates 1 row multiple colums using an assoc array
@@ -41,13 +40,77 @@ class sqlEntity{
         return false;
     }
 
-    protected static function ReadOne(int $id,array $cols): array{
-        
-        return [];
+    public static function ReadOne(int $id,array $cols = ["id"]): array{
+        global $conn;
+        if(count($cols)==0){
+            return [];
+        }
+        $cols = implode(",",$cols);
+        $query = "SELECT $cols from `".static::$table."` WHERE `id` = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i",$id);
+        if(!$stmt->execute()){
+            return [];
+        }
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
     }
-    protected static function ReadMany(int $page,string $cols,int $perpage): array{
-        
-        return [];
+
+
+    public static function FindWhere(string $col,OPERATOR $condition,$other,array $cols = ["id"]): array{
+        global $conn;
+        if(count($cols)==0){
+            return [];
+        }
+        $cols = implode(",",$cols);
+        $query = "SELECT $cols from `".static::$table."` WHERE `$col` ".$condition->value." ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s",$other);
+        if(!$stmt->execute()){
+            return [];
+        }
+        $result = $stmt->get_result();
+        $rows = [];
+        while($row = $result->fetch_assoc()){
+            array_push($rows,$row);
+        }
+        return $rows;
+    }
+
+
+    public static function SELECT(int $page = 0,array $cols = ["id"],int $perpage = 10): array{
+        global $conn;
+        if(count($cols)==0){
+            return [];
+        }
+        $cols = implode(",",$cols);
+        $query = "SELECT $cols from `".static::$table."`LIMIT ? OFFSET ?";
+        $stmt = $conn->prepare($query);
+        $offset = $page*$perpage;
+        $stmt->bind_param("ii",$perpage,$offset);
+        if(!$stmt->execute()){
+            return [];
+        }
+        $result = $stmt->get_result();
+        $rows = [];
+        while($row = $result->fetch_assoc()){
+            array_push($rows,$row);
+        }
+        return $rows;
     }
 }
+
+
+
+/**
+ * 
+ */
+enum OPERATOR: string {
+    case EQUAL = "=";
+    case GRATERTHAN = ">";
+    case LESSTHAN = "<";
+    case GRATEROREQUAL = ">=";
+    case LESSOREQUAL = "<=";
+}
+
 ?>

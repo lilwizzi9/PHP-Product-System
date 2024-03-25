@@ -2,13 +2,15 @@
 include_once __DIR__."/../database/connection.php"; 
 include_once __DIR__."/../sqlEntity/sqlEntity.php"; 
 class Products extends sqlEntity{
-
+    public static $table = "products";
 
     public static function Add(string $name,string $desc,int $owner){
         global $conn;
-        $stmt = $conn->prepare("INSERT INTO `products` ( `name` , `desc`, `owner`) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi",  $name, $desc, $owner);
-        return $stmt->execute() ;
+        return parent::Create([
+            "name"=> $name,
+            "desc"=> $desc,
+            "owner"=> $owner
+        ]);
     }
 
     // public static function Update(string $id, string $col,string $data) : bool {

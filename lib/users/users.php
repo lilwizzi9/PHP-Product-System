@@ -20,9 +20,11 @@ class Users extends sqlEntity{
     public static function Add(string $name,string $email,string $password) : bool {
         global $conn;
         $password = password_hash($password,PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO `".Users::$table."` (`?`,`?`,`?`) VALUES (?,?,?)");
-        $stmt->bind_param("sss",$name,$email,$password);
-        return $stmt->execute();
+        return parent::Create([
+            "username"=>$name,
+            "email"=>$email,
+            "password"=>$password
+        ]);
     }
     //update
     public static function Update(int $id, string $col,string $data) : bool {
